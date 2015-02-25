@@ -56,11 +56,8 @@ function [X,accpt,lambda,subopt] = asrwHM(x0,N,n0,c,d,Gamma)
         m=m+1/(n-n0+1).*(X(n,:)-m);
         EGamma=((X(n0,:)-m)'*(X(n0,:)-m)-EGamma)./(n-n0+1)+EGamma;
         
-        [Q,D]=eig(EGamma);
-        D=diag(sqrt(abs(diag(D))));
-        A=Q*D*Q';
-        
-        M=A/sqrtm(Gamma);
+        [Q,D]=eig(EGamma)
+        M=/sqrtm(Gamma);
         lambda(n-n0,:)=eig(M);
         denom=sum(lambda(n-n0,:).^-2);
         num=sum(lambda(n-n0,:).^-1)^2;
