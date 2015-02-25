@@ -2,7 +2,7 @@ function [X,alpha] = nsrwHM(x0,N,c,d)
 % function [X,alpha] = nsrwHM(x0,N)
 %   X the HM sequence simulating Pi
 %   naive symetric random walk
-%   x0 the initial d-dim. value
+%   x0 the initial value
 %   N the number of iterations
     
     u=0; % this variable will store the uniform distribution to simuate a bernoulli dist.
@@ -12,10 +12,10 @@ function [X,alpha] = nsrwHM(x0,N,c,d)
     X=zeros(N,d);
     X(1)=x0;
     
-    S=c*eye(d);
+    
     
     for n=2:N
-        Y=X(n-1)+normrnd(0,S);
+        Y=X(n-1)+normrnd(0,1);
         aux=density(Y)/density(X(n-1));
         alpha(n)=min([1,aux]);
         
