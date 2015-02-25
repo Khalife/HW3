@@ -3,7 +3,7 @@
 d=200; % The dimension
 Gamma=(100-.01)/d*(1:d)+.01; % Regularly spaced d-dim. array
 Gamma=diag(Gamma);
-N=10000; 
+N=1000; 
 c=1;
 n0=100;
 
@@ -15,6 +15,5 @@ n0=100;
 tr=X(:,1)'./(1:N);
 plot(tr);
 
-alpha=accpt(n0:N);
-alpha=alpha';
-alphaN=cumsum(alpha)./(n0:N);
+alpha=accpt(n0,N);
+alphaN=cumsum(alpha)

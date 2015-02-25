@@ -1,4 +1,4 @@
-function [X,alpha] = nsrwHM(x0,N,c,d,Gamma)
+function [X,accpt] = nsrwHM(x0,N,c,d,Gamma)
 % function [X,alpha] = nsrwHM(x0,N)
 %   X the HM sequence simulating Pi
 %   naive symetric random walk
@@ -6,7 +6,8 @@ function [X,alpha] = nsrwHM(x0,N,c,d,Gamma)
 %   N the number of iterations
     
     u=0; % this variable will store the uniform distribution to simuate a bernoulli dist.
-    alpha=zeros(N,1); %the acceptation rate
+    accpt=zeros(N,1);%the acceptation rate
+    alpha=zeros(N,1); 
     Y=zeros(1,d); % the proposal
     
     X=zeros(N,d);
@@ -23,8 +24,10 @@ function [X,alpha] = nsrwHM(x0,N,c,d,Gamma)
         u=rand;
         if u<alpha(n)
             X(n,:)=Y;
+            accpt(n)=0;
         else
             X(n,:)=X(n-1,:);
+            accpt(n)=1;
         end
     end
     
