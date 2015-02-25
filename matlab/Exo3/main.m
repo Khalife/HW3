@@ -10,3 +10,4 @@ c=1;
 %% question 1
 
 [X,alpha] = nsrwHM(zeros(1,d),N,c,d,Gamma);
+
