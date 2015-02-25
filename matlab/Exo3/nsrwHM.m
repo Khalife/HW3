@@ -24,10 +24,10 @@ function [X,accpt] = nsrwHM(x0,N,c,d,Gamma)
         u=rand;
         if u<alpha(n)
             X(n,:)=Y;
-            accpt(n)=0;
+            accpt(n)=1;
         else
             X(n,:)=X(n-1,:);
-            accpt(n)=1;
+            accpt(n)=0;
         end
     end
     
