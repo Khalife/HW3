@@ -1,4 +1,4 @@
-function [X,alpha] = nsrwHM(x0,N,c)
+function [X,alpha] = nsrwHM(x0,N,c,d)
 % function [X,alpha] = nsrwHM(x0,N)
 %   X the HM sequence simulating Pi
 %   naive symetric random walk
@@ -9,7 +9,7 @@ function [X,alpha] = nsrwHM(x0,N,c)
     alpha=zeros(N,1); %the acceptation rate
     Y=0; % the proposal
     
-    X=zeros(N,1);
+    X=zeros(N,d);
     X(1)=x0;
     
     for n=2:N
