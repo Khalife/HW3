@@ -1,13 +1,12 @@
 %% initialization
-
-clear
 clc
+clear
 
 d=200; % The dimension
 Gamma=(100-.01)/d*(1:d)+.01; % Regularly spaced d-dim. array
 Gamma=diag(Gamma);
-N=500; 
-c=1;
+N=10000; 
+c=10;
 n0=100;
 x0=zeros(1,d);
 
@@ -20,14 +19,14 @@ tr=X(:,1)'./(1:N);
 figure(1),
 subplot(2,1,1),
 plot(tr);
-title('trace plot of the first component of X');
+title('The trace plot of the first component of X');
 
 alpha=accpt(n0:N);
 alpha=alpha';
 alphaN=cumsum(alpha)./(n0:N);
 subplot(2,1,2),
 plot(alphaN);
-title('evolution fo the acceptance ratio');
+title('The evolution fo the acceptance rate');
 
 %% question 2
 
@@ -37,15 +36,16 @@ tr=X(:,1)'./(1:N);
 figure(2),
 subplot(3,1,1),
 plot(tr);
-title('trace plot of the first component of X');
+title('The trace plot of the first component of X');
 
 alpha=accpt(n0:N);
 alpha=alpha';
 alphaN=cumsum(alpha)./(n0:N);
 subplot(3,1,2),
 plot(alphaN);
-title('evolution fo the acceptance ratio');
+title('The evolution of the acceptance rate');
 
 subplot(3,1,3),
 plot(subopt);
+title('The evolution of the suboptimality factor');
 

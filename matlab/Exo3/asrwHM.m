@@ -37,10 +37,15 @@ function [X,accpt,lambda,subopt] = asrwHM(x0,N,n0,c,d,Gamma)
     end
     
     m=1/n0*sum(X(1:n0));
-    EGamma=(X(n0,:)-m)'*(X(n0,:)-m)./n0;
+    %EGamma=(X(n0,:)-m)'*(X(n0,:)-m)./n0;
+    EGamma=zeros(d);% It does not matter how we initialize it in theory, in practice it is better to initialize by zero.
     
     for n=n0+1:N
-        Y=X(n-1,:)+mvnrnd(Z,C/d*EGamma);
+        MU = cat(1,X(n-1,:),X(n-1,:));
+        SIGMA = cat(3,C/d*EGamma,.1/d*eye(d));
+        p = [1-.05; .05];
+        obj = gmdistribution(MU,SIGMA,p);
+        Y=random(obj);
         aux=mvnpdf(Y,Z,S)/mvnpdf(X(n-1,:),Z,S);
         alpha(n)=min([1,aux]);
         
@@ -53,14 +58,14 @@ function [X,accpt,lambda,subopt] = asrwHM(x0,N,n0,c,d,Gamma)
             accpt(n)=0;
         end
         
-        m=m+1/(n-n0+1).*(X(n,:)-m);
-        EGamma=((X(n0,:)-m)'*(X(n0,:)-m)-EGamma)./(n-n0+1)+EGamma;
+        m=m+1/(n-n0).*(X(n,:)-m);
+        EGamma=((X(n,:)-m)'*(X(n,:)-m)-EGamma)./(n-n0)+EGamma;
         
         [Q,D]=eig(EGamma);
         D=diag(sqrt(abs(diag(D))));
         A=Q*D*Q';
         
-        M=A/sqrtm(Gamma);
+        M=A*inv(sqrtm(Gamma));
         lambda(n-n0,:)=eig(M);
         denom=sum(lambda(n-n0,:).^-2);
         num=sum(lambda(n-n0,:).^-1)^2;
