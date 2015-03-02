@@ -97,7 +97,7 @@
 		end~\\
 	\end{algorithm}
 	~\\
-	Since $\forall x \in X, \forall y \in X, q(x,y)=\frac{1}{\gamma}$, the acceptance ratio is equal to 
+	Since $\forall x \in X, \forall y \in X, q(x,y)=\frac{1}{2\gamma}$, the acceptance ratio is equal to 
 	$$
 	\alpha(x,y) =
 	\begin{cases}
@@ -105,7 +105,7 @@
 	0 & \text{otherwise}
 	\end{cases}
 	$$
-	To avoid technical discussions, we will consider the extended distribution $\pi$ on $\mathbb{N}$, with $\pi(k)=0$ if $k \notin X$ so that :
+	To avoid technical discussions, we will consider the extended distribution $\pi$ on $\mathbb{Z}$, with $\pi(k)=0$ if $k \notin X$ so that :
 	$$
 	\alpha(x,y) = 1 \wedge \frac{\pi(y)}{\pi(x)} 
 	$$
@@ -114,7 +114,7 @@
 	And the transition kernel is equal, for $y \neq x$ to:
 	\begin{eqnarray*}
 		p(x,y)&=& q(x,y)\alpha(x,y)\\
-		&=& \frac{1}{\gamma} ( 1 \wedge \frac{\pi(y)}{\pi(x)} ) \\ 	
+		&=& \frac{1}{2\gamma} ( 1 \wedge \frac{\pi(y)}{\pi(x)} ) \\ 	
 	\end{eqnarray*}
 	and : 
 	\begin{eqnarray*}
@@ -122,10 +122,10 @@
 	\end{eqnarray*}
 	First :
 	\begin{eqnarray*}
-		p(x,y \neq x) & = & \frac{1}{\gamma}(1 \wedge \frac{\pi(y)}{\pi(x)})\\
-		& \geq & \frac{1}{\gamma }(1 \wedge \frac{\pi(y)}{\max_x \pi(x)})\\
-		& = &  \frac{\pi(y)}{\gamma \max_x \pi(x)}\\
-		& \geq & 	 \frac{\pi(y)}{\gamma}	 
+		p(x,y \neq x) & = & \frac{1}{2\gamma}(1 \wedge \frac{\pi(y)}{\pi(x)})\\
+		& \geq & \frac{1}{2\gamma }(1 \wedge \frac{\pi(y)}{\max_x \pi(x)})\\
+		& = &  \frac{\pi(y)}{2\gamma \max_x \pi(x)}\\
+		& \geq & 	 \frac{\pi(y)}{2\gamma}	 
 	\end{eqnarray*}
 	The third equality is due to $\frac{\pi(y)}{\max_x \pi(x)} \leq 1 $.
 	The fourth inequality is due to $max_x \pi(x) \leq 1$.~\\
@@ -136,11 +136,11 @@
 		&=& q(x,x)+\sum_{y \neq x}q(x,y) -\sum_{y \neq x}q(x,y)\alpha(x,y)\\
 		&=& q(x,x) + \sum_{x \neq y}q(x,y)(1-\alpha(x,y))\\
 		& \geq & q(x,x)\\
-		& = & \frac{1}{\gamma}\\
-		& \geq & \frac{\pi(x)}{\gamma} 
+		& = & \frac{1}{2\gamma}\\
+		& \geq & \frac{\pi(x)}{2\gamma} 
 	\end{eqnarray*}
 	The second inequality is obtained by upper bounding the sum terms by 1, and using $|X|=6$.
-	Let $\boxed{\epsilon=\frac{1}{\gamma}}$, then
+	Let $\boxed{\epsilon=\frac{1}{2\gamma}}$, then
 	$$\forall x, \forall y \quad p(x,y) \geq \epsilon  \pi(y)$$
 	which can be written in terms of subsets B of $X$ :
 	$$\boxed{p(x,B) \geq \epsilon  \pi(B)}$$
@@ -150,16 +150,38 @@
 	Given one initial distribution $\xi$, we have in the general case:
 	$$||\xi P^n - \pi||_{TV} \leq (\Delta(P))^{ n } ||\xi-\pi||_{TV}$$
 	which yields here :
-	$$ \boxed{||\xi P^n - \pi||_{TV} \leq (1-\frac{1}{\gamma})^{ n } ||\xi-\pi||_{TV}}$$~\\
-	Where $\xi P^n$ is actually the distribution of $X_n$. We have a geometric ergodicity~\\
+	$$ \boxed{||\xi P^n - \pi||_{TV} \leq (1-\frac{1}{2\gamma})^{ n } ||\xi-\pi||_{TV}}$$~\\
+	Where $\xi P^n$ is actually the distribution of $X_n$. We have geometric ergodicity~\\
 	~\\
-	3.~\\
+	3. Cf code for implementation.~\\
+	The following error is computed with comparison of the numerical mean and the theoretical mean :  $\pi(1)=\frac{1}{2}$, $\pi(2)=\frac{2}{6}$, $\pi(3)=\frac{1}{24}$, $\pi(4)=\frac{1}{24}$, $\pi(5)=\frac{1}{24}$, $\pi(6)=\frac{1}{24}$, using many simulations (Monte Carlo Simulation).~\\
 	~\\
+	$\gamma=1$,  $error=0.1440$.~\\
+	$\gamma=4$ $error=0.0641$~\\
+	$\gamma=50$ $error=0.1818$~\\
+	~\\
+	Small values of $\gamma$ provide a better theoretical upperbound (cf 2). Here, we see that there is a trade off with regards of the value of $\gamma$. Small values will not promote the exploration of the set X, and this explains the bad convergence of the algorithm.
 	\section*{Exercise 2}
-	1.~\\
+	1. Let a family of transition matrices $$ P_t = \begin{bmatrix} t & (1-t) \\ (1-t) & t \end{bmatrix} $$~\\
 	~\\
-	2.~\\
+	The obvious invariant distribution is $\pi=\begin{bmatrix} \frac{1}{2} \\ \frac{1}{2} \end{bmatrix}$.
 	~\\
+	Since $t \in ]0,1[$, the Markov Chain is obviously irreducible. ~\\
+	~\\
+	-> récurrente positive 
+	-> apériodique ~\\
+	~\\
+	2. Given the algorithm written $X_n$ depends only on $X_{n-1}$ and, $$\mathbb{P}(X_{n+1}=x | X_{n}=y)= P_{t_0}(y,x)\textbf{1}_{y=0}+P_{t_1}(y,x)\textbf{1}_{y=1}$$, then 
+	
+	$$P_{*}= \begin{bmatrix} t_0 & (1-t_1) \\ (1-t_0) & t_1 \end{bmatrix}$$
+	Solving 
+	$$ \pi P = \pi $$ 
+	gives $\pi^{*}_1=\frac{\pi_2(t_1-1)}{t_0-1}$, and $\pi_1 + \pi_2 = 1 $ yields :
+	$$\boxed{\pi^{*}_1 = \frac{t_1-1}{t_0+t_1 -2}}$$
+	and
+	$$\boxed{\pi^{*}_2 = \frac{t_0-1}{t_0+t_1-2}}$$
+	The chain is obviously irreducible (each state is available from another since $t_0 \in ]0,1[$  and $t_1 \in ]0,1[$).
+	
 	\section*{Exercise 3}
 	
 	
